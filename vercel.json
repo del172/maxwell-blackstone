@@ -1,41 +1,17 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1" },
-    { 
-      "src": "/assets/(.*)", 
-      "dest": "/dist/assets/$1",
-      "headers": { "cache-control": "public, max-age=31536000, immutable" }
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/node"
     },
-    { 
-      "src": "/(.*)\\.js", 
-      "dest": "/dist/$1.js" 
-    },
-    { 
-      "src": "/(.*)\\.css", 
-      "dest": "/dist/$1.css" 
-    },
-    { 
-      "src": "/favicon.ico", 
-      "dest": "/dist/favicon.ico" 
-    },
-    { 
-      "src": "/(.*)", 
-      "dest": "/dist/index.html" 
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
     }
   ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Content-Security-Policy", "value": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'" }
-      ]
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
